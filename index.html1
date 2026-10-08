@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>USDT Wallet</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#0b1020;
+    color:white;
+    min-height:100vh;
+}
+
+.container{
+    width:100%;
+    max-width:480px;
+    margin:auto;
+    padding:18px;
+}
+
+.card{
+    background:#151c31;
+    border:1px solid #293452;
+    border-radius:16px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+h1{
+    text-align:center;
+    margin:15px 0 25px;
+}
+
+h2{
+    font-size:19px;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin:10px 0 7px;
+    color:#b9c2d9;
+    font-size:14px;
+}
+
+input,
+select{
+    width:100%;
+    padding:13px;
+    border-radius:10px;
+    border:1px solid #35405f;
+    background:#0d1427;
+    color:white;
+    outline:none;
+}
+
+button{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:10px;
+    background:#22c55e;
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    margin-top:12px;
+    cursor:pointer;
+}
+
+button.secondary{
+    background:#293452;
+}
+
+button.danger{
+    background:#dc3545;
+}
+
+.hidden{
+    display:none;
+}
+
+.logo{
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+    margin-top:20px;
+}
+
+.balance{
+    text-align:center;
+    padding:20px;
+}
+
+.balance small{
+    color:#aeb7ce;
+}
+
+.balance strong{
+    display:block;
+    font-size:34px;
+    margin-top:8px;
+}
+
+.wallet{
+    background:#0d1427;
+    border-radius:10px;
+    padding:12px;
+    margin-top:10px;
+    color:#dce3f5;
+    font-size:13px;
+}
+
+.walletAddressBox{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:8px;
+}
+
+.walletAddress{
+    flex:1;
+    word-break:break-all;
+}
+
+.copyBtn{
+    width:auto;
+    margin:0;
+    padding:9px 12px;
+    background:#2563eb;
+    font-size:13px;
+}
+
+.info{
+    color:#9eabc8;
+    font-size:13px;
+    margin-top:8px;
+    line-height:1.5;
+}
+
+.receive{
+    background:#0d1427;
+    padding:14px;
+    border-radius:10px;
+    margin-top:12px;
+    text-align:center;
+}
+
+.receive strong{
+    font-size:22px;
+}
+
+.activity{
+    padding:10px 0;
+    border-bottom:1px solid #293452;
+    font-size:14px;
+}
+
+.activity:last-child{
+    border-bottom:0;
+}
+
+.success{
+    color:#22c55e;
+}
+
+.error{
+    color:#ff5c5c;
+}
+
+.tx{
+    background:#0d1427;
+    padding:12px;
+    border-radius:10px;
+    margin-bottom:8px;
+    font-size:13px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.topbar button{
+    width:auto;
+    padding:8px 12px;
+    margin:0;
+    font-size:13px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+
+<!-- =========================
+     LOGIN PAGE
+========================= -->
+
+<div id="loginPage">
+
+    <div class="logo">
+        💰 USDT Wallet
+    </div>
+
+    <div class="card" style="margin-top:30px;">
+
+        <h2>Login</h2>
+
+        <label>
+            Mobile Number
+        </label>
+
+        <input
+            type="tel"
+            id="mobileInput"
+            placeholder="Enter mobile number"
+            maxlength="15"
+            inputmode="numeric"
+        >
+
+        <div
+            id="loginError"
+            class="error"
+            style="margin-top:8px;"
+        ></div>
+
+        <button
+            type="button"
+            id="loginButton"
+        >
+            Login
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<div id="dashboard" class="hidden">
+
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <h2 style="margin:0;">
+            USDT Wallet
+        </h2>
+
+        <button
+            type="button"
+            class="danger"
+            id="logoutButton"
+        >
+            Logout
+        </button>
+
+    </div>
+
+
+
+    <!-- BALANCE -->
+
+    <div class="card balance">
+
+        <small>
+            Available Balance
+        </small>
+
+        <strong>
+            <span id="balance">0.00</span> USDT
+        </strong>
+
+    </div>
+
+
+
+    <!-- =========================
+         DEPOSIT
+    ========================= -->
+
+    <div class="card">
+
+        <h2>
+            Deposit USDT
+        </h2>
+
+
+        <label>
+            Network
+        </label>
+
+        <select id="network">
+
+            <option value="TRC20">
+                TRC20 / TRON
+            </option>
+
+            <option value="BEP20">
+                BEP20 / BNB Smart Chain
+            </option>
+
+            <option value="ERC20">
+                ERC20 / Ethereum
+            </option>
+
+        </select>
+
+
+
+        <label>
+            Deposit Amount (USDT)
+        </label>
+
+        <input
+            type="number"
+            id="depositAmount"
+            placeholder="Minimum 5.99 USDT"
+            min="5.99"
+            step="0.01"
+        >
+
+
+        <div class="info">
+
+            Minimum Deposit:
+            5.99 USDT
+
+            <br>
+
+            Deposit Rate:
+            ₹109 / USDT
+
+        </div>
+
+
+
+        <!-- WALLET -->
+
+        <div class="wallet">
+
+            <b>
+                Wallet Address:
+            </b>
+
+
+            <div class="walletAddressBox">
+
+                <div
+                    id="walletAddress"
+                    class="walletAddress"
+                ></div>
+
+
+                <button
+                    type="button"
+                    id="copyWalletButton"
+                    class="copyBtn"
+                >
+                    Copy
+                </button>
+
+            </div>
+
+
+            <div
+                id="copyMessage"
+                class="success"
+                style="margin-top:8px;"
+            ></div>
+
+        </div>
+
+
+
+        <button
+            type="button"
+            id="depositButton"
+        >
+            Submit Deposit
+        </button>
+
+
+        <div
+            id="depositMessage"
+            style="margin-top:10px;"
+        ></div>
+
+    </div>
+
+
+
+    <!-- =========================
+         WITHDRAW
+    ========================= -->
+
+    <div class="card">
+
+        <h2>
+            Withdraw USDT
+        </h2>
+
+
+        <label>
+            Withdrawal Amount (USDT)
+        </label>
+
+        <input
+            type="number"
+            id="withdrawAmount"
+            placeholder="Enter USDT amount"
+            min="0"
+            step="0.01"
+        >
+
+
+        <div class="info">
+
+            Withdrawal Rate:
+
+            <br>
+
+            Below 10 USDT →
+            ₹113 / USDT
+
+            <br>
+
+            10 USDT or more →
+            ₹109 / USDT
+
+        </div>
+
+
+        <!-- RECEIVE -->
+
+        <div class="receive">
+
+            <div>
+                You Receive
+            </div>
+
+            <strong>
+                ₹<span id="receiveAmount">0.00</span>
+            </strong>
+
+        </div>
+
+
+
+        <!-- METHOD -->
+
+        <label>
+            Withdrawal Method
+        </label>
+
+        <select id="withdrawMethod">
+
+            <option value="UPI">
+                UPI
+            </option>
+
+            <option value="BANK">
+                Bank
+            </option>
+
+        </select>
+
+
+
+        <!-- UPI -->
+
+        <div id="upiFields">
+
+            <label>
+                UPI ID
+            </label>
+
+            <input
+                type="text"
+                id="upiId"
+                placeholder="example@upi"
+            >
+
+        </div>
+
+
+
+        <!-- BANK -->
+
+        <div
+            id="bankFields"
+            class="hidden"
+        >
+
+            <label>
+                Account Holder Name
+            </label>
+
+            <input
+                type="text"
+                id="accountName"
+            >
+
+
+            <label>
+                Account Number
+            </label>
+
+            <input
+                type="text"
+                id="accountNumber"
+            >
+
+
+            <label>
+                IFSC
+            </label>
+
+            <input
+                type="text"
+                id="ifsc"
+            >
+
+
+            <label>
+                Bank Name
+            </label>
+
+            <input
+                type="text"
+                id="bankName"
+            >
+
+        </div>
+
+
+
+        <button
+            type="button"
+            id="withdrawButton"
+        >
+            Submit Withdrawal
+        </button>
+
+
+        <div
+            id="withdrawMessage"
+            style="margin-top:10px;"
+        ></div>
+
+    </div>
+
+
+
+    <!-- =========================
+         RECENT ACTIVITY
+    ========================= -->
+
+    <div class="card">
+
+        <h2>
+            Recent Activity
+        </h2>
+
+
+        <div class="activity success">
+
+            🟢 Rahul****4821
+            deposited 25 USDT
+
+        </div>
+
+
+        <div class="activity">
+
+            🔴 Amit****1932
+            withdrew 10 USDT
+
+        </div>
+
+
+        <div class="activity success">
+
+            🟢 User****7284
+            deposited 15 USDT
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         TRANSACTION HISTORY
+    ========================= -->
+
+    <div class="card">
+
+        <h2>
+            Transaction History
+        </h2>
+
+
+        <div id="transactionHistory">
+
+            <div class="info">
+                No transactions yet.
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =========================
+         SUPPORT
+    ========================= -->
+
+    <div class="card">
+
+        <h2>
+            Support
+        </h2>
+
+
+        <div class="info">
+
+            Need help?
+            Contact us on WhatsApp.
+
+        </div>
+
+
+        <button
+            type="button"
+            id="whatsappButton"
+        >
+            WhatsApp Support
+        </button>
+
+    </div>
+
+
+</div>
+
+</div>
+
+
+
+<script>
+
+
+/* =========================
+   WALLET ADDRESSES
+========================= */
+
+var walletAddresses = {
+
+    TRC20:
+    "TQnQ6auf6gRfsgH3kjm7EokPq16bvSLNky",
+
+    BEP20:
+    "0xcE56d74A2E0C8706ab928aC33f537Ea5AE9f7137",
+
+    ERC20:
+    "0xcE56d74A2E0C8706ab928aC33f537Ea5AE9f7137"
+
+};
+
+
+
+/* =========================
+   LOGIN
+========================= */
+
+document
+.getElementById("loginButton")
+.addEventListener(
+    "click",
+    function(){
+
+        var mobile =
+            document
+            .getElementById("mobileInput")
+            .value
+            .trim();
+
+
+        var error =
+            document
+            .getElementById("loginError");
+
+
+        error.innerHTML = "";
+
+
+        if(mobile === ""){
+
+            error.innerHTML =
+                "Please enter your mobile number.";
+
+            return;
+
+        }
+
+
+        var digitsOnly =
+            mobile.replace(/\D/g,"");
+
+
+        if(digitsOnly.length < 10){
+
+            error.innerHTML =
+                "Please enter a valid mobile number.";
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+            "walletMobile",
+            digitsOnly
+        );
+
+
+        showDashboard();
+
+    }
+);
+
+
+
+/* =========================
+   SHOW DASHBOARD
+========================= */
+
+function showDashboard(){
+
+    document
+    .getElementById("loginPage")
+    .classList
+    .add("hidden");
+
+
+    document
+    .getElementById("dashboard")
+    .classList
+    .remove("hidden");
+
+
+    loadBalance();
+
+    updateWalletAddress();
+
+    loadTransactions();
+
+}
+
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+document
+.getElementById("logoutButton")
+.addEventListener(
+    "click",
+    function(){
+
+        localStorage.removeItem(
+            "walletMobile"
+        );
+
+
+        document
+        .getElementById("dashboard")
+        .classList
+        .add("hidden");
+
+
+        document
+        .getElementById("loginPage")
+        .classList
+        .remove("hidden");
+
+
+        document
+        .getElementById("mobileInput")
+        .value = "";
+
+    }
+);
+
+
+
+/* =========================
+   BALANCE
+========================= */
+
+function loadBalance(){
+
+    var balance =
+        localStorage.getItem(
+            "demoBalance"
+        );
+
+
+    if(balance === null){
+
+        balance = "0";
+
+        localStorage.setItem(
+            "demoBalance",
+            "0"
+        );
+
+    }
+
+
+    document
+    .getElementById("balance")
+    .innerHTML =
+        parseFloat(balance).toFixed(2);
+
+}
+
+
+
+function saveBalance(value){
+
+    localStorage.setItem(
+        "demoBalance",
+        value
+    );
+
+
+    document
+    .getElementById("balance")
+    .innerHTML =
+        parseFloat(value).toFixed(2);
+
+}
+
+
+
+/* =========================
+   NETWORK
+========================= */
+
+document
+.getElementById("network")
+.addEventListener(
+    "change",
+    updateWalletAddress
+);
+
+
+
+function updateWalletAddress(){
+
+    var network =
+        document
+        .getElementById("network")
+        .value;
+
+
+    document
+    .getElementById("walletAddress")
+    .innerHTML =
+        walletAddresses[network];
+
+}
+
+
+
+/* =========================
+   COPY WALLET
+========================= */
+
+document
+.getElementById("copyWalletButton")
+.addEventListener(
+    "click",
+    function(){
+
+        var address =
+            document
+            .getElementById("walletAddress")
+            .innerText
+            .trim();
+
+
+        var message =
+            document
+            .getElementById("copyMessage");
+
+
+        if(address === ""){
+
+            return;
+
+        }
+
+
+        /* Modern copy */
+
+        if(
+            navigator.clipboard &&
+            navigator.clipboard.writeText
+        ){
+
+            navigator.clipboard
+            .writeText(address)
+            .then(
+                function(){
+
+                    message.innerHTML =
+                        "✓ Wallet address copied!";
+
+
+                    setTimeout(
+                        function(){
+
+                            message.innerHTML = "";
+
+                        },
+                        2000
+                    );
+
+                }
+            )
+            .catch(
+                function(){
+
+                    fallbackCopy(address);
+
+                }
+            );
+
+        }else{
+
+            fallbackCopy(address);
+
+        }
+
+    }
+);
+
+
+
+/* =========================
+   COPY FALLBACK
+========================= */
+
+function fallbackCopy(text){
+
+    var input =
+        document.createElement("textarea");
+
+
+    input.value = text;
+
+    document.body.appendChild(input);
+
+    input.select();
+
+    try{
+
+        document.execCommand("copy");
+
+        document
+        .getElementById("copyMessage")
+        .innerHTML =
+            "✓ Wallet address copied!";
+
+    }
+    catch(error){
+
+        document
+        .getElementById("copyMessage")
+        .innerHTML =
+            "Copy failed. Please copy manually.";
+
+    }
+
+
+    document.body.removeChild(input);
+
+
+    setTimeout(
+        function(){
+
+            document
+            .getElementById("copyMessage")
+            .innerHTML = "";
+
+        },
+        2000
+    );
+
+}
+
+
+
+/* =========================
+   DEPOSIT
+========================= */
+
+document
+.getElementById("depositButton")
+.addEventListener(
+    "click",
+    function(){
+
+        var amount =
+            parseFloat(
+                document
+                .getElementById("depositAmount")
+                .value
+            );
+
+
+        var network =
+            document
+            .getElementById("network")
+            .value;
+
+
+        var message =
+            document
+            .getElementById("depositMessage");
+
+
+        message.innerHTML = "";
+
+
+        if(
+            isNaN(amount) ||
+            amount < 5.99
+        ){
+
+            message.innerHTML =
+                '<span class="error">' +
+                'Minimum deposit is 5.99 USDT.' +
+                '</span>';
+
+            return;
+
+        }
+
+
+        addTransaction(
+            "Deposit",
+            amount,
+            network,
+            "Pending"
+        );
+
+
+        document
+        .getElementById("depositAmount")
+        .value = "";
+
+
+        message.innerHTML =
+            '<span class="success">' +
+            'Deposit request submitted. ' +
+            'Status: Pending.' +
+            '</span>';
+
+    }
+);
+
+
+
+/* =========================
+   WITHDRAW CALCULATION
+========================= */
+
+document
+.getElementById("withdrawAmount")
+.addEventListener(
+    "input",
+    calculateWithdrawal
+);
+
+
+
+function calculateWithdrawal(){
+
+    var amount =
+        parseFloat(
+            document
+            .getElementById("withdrawAmount")
+            .value
+        );
+
+
+    if(
+        isNaN(amount) ||
+        amount <= 0
+    ){
+
+        document
+        .getElementById("receiveAmount")
+        .innerHTML =
+            "0.00";
+
+        return;
+
+    }
+
+
+    var rate;
+
+
+    if(amount < 10){
+
+        rate = 113;
+
+    }else{
+
+        rate = 109;
+
+    }
+
+
+    var receive =
+        amount * rate;
+
+
+    document
+    .getElementById("receiveAmount")
+    .innerHTML =
+        receive.toFixed(2);
+
+}
+
+
+
+/* =========================
+   WITHDRAW METHOD
+========================= */
+
+document
+.getElementById("withdrawMethod")
+.addEventListener(
+    "change",
+    function(){
+
+        var method = this.value;
+
+
+        if(method === "BANK"){
+
+            document
+            .getElementById("bankFields")
+            .classList
+            .remove("hidden");
+
+
+            document
+            .getElementById("upiFields")
+            .classList
+            .add("hidden");
+
+        }
+        else{
+
+            document
+            .getElementById("upiFields")
+            .classList
+            .remove("hidden");
+
+
+            document
+            .getElementById("bankFields")
+            .classList
+            .add("hidden");
+
+        }
+
+    }
+);
+
+
+
+/* =========================
+   WITHDRAW
+========================= */
+
+document
+.getElementById("withdrawButton")
+.addEventListener(
+    "click",
+    function(){
+
+        var amount =
+            parseFloat(
+                document
+                .getElementById("withdrawAmount")
+                .value
+            );
+
+
+        var message =
+            document
+            .getElementById("withdrawMessage");
+
+
+        message.innerHTML = "";
+
+
+        if(
+            isNaN(amount) ||
+            amount <= 0
+        ){
+
+            message.innerHTML =
+                '<span class="error">' +
+                'Enter a valid withdrawal amount.' +
+                '</span>';
+
+            return;
+
+        }
+
+
+        var balance =
+            parseFloat(
+                localStorage.getItem(
+                    "demoBalance"
+                ) || "0"
+            );
+
+
+        if(amount > balance){
+
+            message.innerHTML =
+                '<span class="error">' +
+                'Insufficient balance.' +
+                '</span>';
+
+            return;
+
+        }
+
+
+        var method =
+            document
+            .getElementById("withdrawMethod")
+            .value;
+
+
+
+        /* UPI */
+
+        if(method === "UPI"){
+
+            var upi =
+                document
+                .getElementById("upiId")
+                .value
+                .trim();
+
+
+            if(upi === ""){
+
+                message.innerHTML =
+                    '<span class="error">' +
+                    'Please enter your UPI ID.' +
+                    '</span>';
+
+                return;
+
+            }
+
+        }
+
+
+
+        /* BANK */
+
+        else{
+
+            var name =
+                document
+                .getElementById("accountName")
+                .value
+                .trim();
+
+
+            var account =
+                document
+                .getElementById("accountNumber")
+                .value
+                .trim();
+
+
+            var ifsc =
+                document
+                .getElementById("ifsc")
+                .value
+                .trim();
+
+
+            var bank =
+                document
+                .getElementById("bankName")
+                .value
+                .trim();
+
+
+            if(
+                name === "" ||
+                account === "" ||
+                ifsc === "" ||
+                bank === ""
+            ){
+
+                message.innerHTML =
+                    '<span class="error">' +
+                    'Please fill all bank details.' +
+                    '</span>';
+
+                return;
+
+            }
+
+        }
+
+
+
+        var newBalance =
+            balance - amount;
+
+
+        saveBalance(newBalance);
+
+
+        addTransaction(
+            "Withdrawal",
+            amount,
+            method,
+            "Pending"
+        );
+
+
+        document
+        .getElementById("withdrawAmount")
+        .value = "";
+
+
+        calculateWithdrawal();
+
+
+        message.innerHTML =
+            '<span class="success">' +
+            'Withdrawal request submitted. ' +
+            'Status: Pending.' +
+            '</span>';
+
+    }
+);
+
+
+
+/* =========================
+   TRANSACTIONS
+========================= */
+
+function addTransaction(
+    type,
+    amount,
+    method,
+    status
+){
+
+    var transactions =
+        JSON.parse(
+            localStorage.getItem(
+                "transactions"
+            ) || "[]"
+        );
+
+
+    transactions.unshift({
+
+        type:type,
+
+        amount:amount,
+
+        method:method,
+
+        status:status,
+
+        date:
+        new Date().toLocaleString()
+
+    });
+
+
+    localStorage.setItem(
+        "transactions",
+        JSON.stringify(transactions)
+    );
+
+
+    loadTransactions();
+
+}
+
+
+
+function loadTransactions(){
+
+    var box =
+        document
+        .getElementById(
+            "transactionHistory"
+        );
+
+
+    var transactions =
+        JSON.parse(
+            localStorage.getItem(
+                "transactions"
+            ) || "[]"
+        );
+
+
+    if(transactions.length === 0){
+
+        box.innerHTML =
+            '<div class="info">' +
+            'No transactions yet.' +
+            '</div>';
+
+        return;
+
+    }
+
+
+    box.innerHTML = "";
+
+
+    for(
+        var i = 0;
+        i < transactions.length;
+        i++
+    ){
+
+        var tx =
+            transactions[i];
+
+
+        var symbol =
+            tx.type === "Deposit"
+            ? "🟢"
+            : "🔴";
+
+
+        box.innerHTML +=
+
+            '<div class="tx">' +
+
+            symbol +
+            " " +
+
+            "<b>" +
+            tx.type +
+            "</b><br>" +
+
+            "Amount: " +
+
+            parseFloat(
+                tx.amount
+            ).toFixed(2) +
+
+            " USDT<br>" +
+
+            "Method: " +
+
+            tx.method +
+
+            "<br>" +
+
+            "Status: " +
+
+            tx.status +
+
+            "<br>" +
+
+            "<small>" +
+
+            tx.date +
+
+            "</small>" +
+
+            "</div>";
+
+    }
+
+}
+
+
+
+/* =========================
+   WHATSAPP
+========================= */
+
+document
+.getElementById("whatsappButton")
+.addEventListener(
+    "click",
+    function(){
+
+        window.open(
+            "https://wa.me/91XXXXXXXXXX",
+            "_blank"
+        );
+
+    }
+);
+
+
+
+/* =========================
+   AUTO LOGIN
+========================= */
+
+window.addEventListener(
+    "load",
+    function(){
+
+        var mobile =
+            localStorage.getItem(
+                "walletMobile"
+            );
+
+
+        if(mobile){
+
+            showDashboard();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
